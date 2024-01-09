@@ -60,7 +60,7 @@ export default function MyKeboard() {
     // Display numbers types 
     const firstNumberDisplay = () => {
         if (result !== null) {
-            return <Text style={result < 99999 ? [Styles.screenFirstNumber, {color: myColors.result}] : [Styles.screenFirstNumber, {fontSize: 50, color: myColors.result}]}>{result?.toString()}</Text>
+            return <Text style={+result < 99999 ? [Styles.screenFirstNumber, {color: myColors.result}] : [Styles.screenFirstNumber, {fontSize: 50, color: myColors.result}]}>{result?.toString()}</Text>
         }
         if (firstNumber && firstNumber.length < 6) {
             return <Text style={Styles.screenFirstNumber}>{firstNumber}</Text>
@@ -94,40 +94,42 @@ export default function MyKeboard() {
                     alignSelf: "center"
                 }}
             >
-                <Text style={Styles.screenSecondNumber}>{secondNumber}
+                <Text style={Styles.screenSecondNumber}>
+                    {secondNumber}
                 <Text style={{ color: "purple", fontSize: 50, fontWeight: "500" }}>{operation}</Text>
                 </Text>
+                {firstNumberDisplay()}
             </View>
             <View style={Styles.row}>
-                <Button title="AC" isGray onPress={clear} />
-                <Button title="+/-" isGray onPress={() => handleOperationPress("+/-")} />
-                <Button title="%" isGray onPress={() => handleNumberPress("%")} />
-                <Button title="÷" isGray onPress={() => handleNumberPress("/")} />
-            </View>
-            <View style={Styles.row}>
-                <Button title="7" onPress={() => handleOperationPress("7")} />
-                <Button title="8" onPress={() => handleOperationPress("8")} />
-                <Button title="9" onPress={() => handleNumberPress("9")} />
-                <Button title="x" isBlue onPress={() => handleNumberPress("*")} />
-            </View>
-            <View style={Styles.row}>
-                <Button title="4" onPress={() => handleOperationPress("4")} />
-                <Button title="5" onPress={() => handleOperationPress("5")} />
-                <Button title="6" onPress={() => handleNumberPress("6")} />
-                <Button title="-" isBlue onPress={() => handleNumberPress("-")} />
-            </View>
-            <View style={Styles.row}>
-                <Button title="1" onPress={() => handleOperationPress("1")} />
-                <Button title="2" onPress={() => handleOperationPress("2")} />
-                <Button title="3" onPress={() => handleNumberPress("3")} />
-                <Button title="+" isBlue onPress={() => handleNumberPress("+")} />
-            </View>
-            <View style={Styles.row}>
-                <Button title="." onPress={() => handleOperationPress(".")} />
-                <Button title="0" onPress={() => handleOperationPress("0")} />
-                <Button title="⌫" onPress={() => handleNumberPress(firstNumber.slice(0, -1))} />
-                <Button title="=" isBlue onPress={() => handleNumberPress("*")} />
-            </View>
-        </View>
+        <Button title="AC" isGray onPress={clear} />
+        <Button title="+/-" isGray onPress={() => handleOperationPress("+/-")} />
+        <Button title="％" isGray onPress={() => handleOperationPress("％")} />
+        <Button title="÷" isBlue onPress={() => handleOperationPress("/")} />
+      </View>
+      <View style={Styles.row}>
+        <Button title="7" onPress={() => handleNumberPress("7")} />
+        <Button title="8" onPress={() => handleNumberPress("8")} />
+        <Button title="9" onPress={() => handleNumberPress("9")} />
+        <Button title="×" isBlue onPress={() => handleOperationPress("*")} />
+      </View>
+      <View style={Styles.row}>
+        <Button title="4" onPress={() => handleNumberPress("4")} />
+        <Button title="5" onPress={() => handleNumberPress("5")} />
+        <Button title="6" onPress={() => handleNumberPress("6")} />
+        <Button title="-" isBlue onPress={() => handleOperationPress("-")} />
+      </View>
+      <View style={Styles.row}>
+        <Button title="1" onPress={() => handleNumberPress("1")} />
+        <Button title="2" onPress={() => handleNumberPress("2")} />
+        <Button title="3" onPress={() => handleNumberPress("3")} />
+        <Button title="+" isBlue onPress={() => handleOperationPress("+")} />
+      </View>
+      <View style={Styles.row}>
+        <Button title="." onPress={() => handleNumberPress(".")} />
+        <Button title="0" onPress={() => handleNumberPress("0")} />
+        <Button title="⌫" onPress={() => setFirstNumber(firstNumber.slice(0, -1))} />
+        <Button title="=" isBlue onPress={() => getResult()} />
+      </View>
+    </View>
     );
 };
