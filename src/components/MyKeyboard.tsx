@@ -57,8 +57,47 @@ export default function MyKeboard() {
         }
     };
 
+    // Display numbers types 
+    const firstNumberDisplay = () => {
+        if (result !== null) {
+            return <Text style={result < 99999 ? [Styles.screenFirstNumber, {color: myColors.result}] : [Styles.screenFirstNumber, {fontSize: 50, color: myColors.result}]}>{result?.toString()}</Text>
+        }
+        if (firstNumber && firstNumber.length < 6) {
+            return <Text style={Styles.screenFirstNumber}>{firstNumber}</Text>
+        }
+        if (firstNumber === "") {
+            return <Text style={Styles.screenFirstNumber}>{"0"}</Text>
+        }
+        if (firstNumber.length > 5 && firstNumber.length < 8) {
+            return (
+                <Text style={[Styles.screenFirstNumber, { fontSize: 70 }]}>
+                    {firstNumber}
+                </Text>
+            );
+        }
+        if (firstNumber.length > 7) {
+            return (
+                <Text style={[Styles.screenFirstNumber, { fontSize: 70 }]}>
+                    {firstNumber}
+                </Text>
+            );
+        }
+    }
+
     return (
-        <>
+        <View style={Styles.viewBottom}>
+            <View
+                style={{
+                    height: 120,
+                    width: "90%",
+                    justifyContent: "flex-end",
+                    alignSelf: "center"
+                }}
+            >
+                <Text style={Styles.screenSecondNumber}>{secondNumber}
+                <Text style={{ color: "purple", fontSize: 50, fontWeight: "500" }}>{operation}</Text>
+                </Text>
+            </View>
             <View style={Styles.row}>
                 <Button title="AC" isGray onPress={clear} />
                 <Button title="+/-" isGray onPress={() => handleOperationPress("+/-")} />
@@ -89,6 +128,6 @@ export default function MyKeboard() {
                 <Button title="⌫" onPress={() => handleNumberPress(firstNumber.slice(0, -1))} />
                 <Button title="=" isBlue onPress={() => handleNumberPress("*")} />
             </View>
-        </>
+        </View>
     );
 };
