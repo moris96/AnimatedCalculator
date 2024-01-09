@@ -6,6 +6,6 @@ export const myColors = {
     btnDark: "#2E2F38",
     gray: "#747477",
     black: "#00000",
-    white: "#FFFFF",
+    white: "#FFFFFF",
     result: "#46D528",
 };
