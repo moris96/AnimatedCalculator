@@ -11,12 +11,31 @@ export default function MyKeboard() {
     const [secondNumber, setSecondNumber] = React.useState("")
     const [operation, setOperation] = React.useState("")
     const [result, setResult] = React.useState<Number | null>(null)
+    // const [isPiPressed, setIsPiPressed] = React.useState(false); 
 
     const handleNumberPress = (buttonValue: string) => {
-        if (firstNumber.length < 10) {
-            setFirstNumber(firstNumber + buttonValue)
+        // if (firstNumber.length < 10) {
+        //     setFirstNumber(firstNumber + buttonValue)
+        // }
+
+        if (buttonValue === "π") {
+            setFirstNumber(Math.PI.toFixed(5));
+        } else if (firstNumber.length < 10) {
+            setFirstNumber(firstNumber + buttonValue);
         }
     };
+
+
+
+    // const handleNumberPress = (buttonValue: string) => {
+    //     if (buttonValue === "π") {
+    //         setIsPiPressed(true); // Set flag for π button press
+    //         setFirstNumber(Math.PI.toString());
+    //     } else if (firstNumber.length < 10) {
+    //         setIsPiPressed(false); // Reset flag for other numbers
+    //         setFirstNumber(firstNumber + buttonValue);
+    //     }
+    // };
 
     const handleOperationPress = (buttonValue: string) => {
         setOperation(buttonValue)
@@ -47,8 +66,9 @@ export default function MyKeboard() {
                 setResult(parseFloat(secondNumber) * parseFloat(firstNumber))
                 break;
             case "/":
-                clear()
-                setResult(parseFloat(secondNumber) / parseFloat(firstNumber))
+                const divideBy = parseFloat(firstNumber) === 0 ? NaN : parseFloat(firstNumber);
+                clear();
+                setResult(parseFloat(secondNumber) / divideBy);
                 break;
             case "+/-":
                 clear();
@@ -66,23 +86,66 @@ export default function MyKeboard() {
                 clear()
                 setResult(Math.tan(parseFloat(firstNumber)))
                 break;
+            case "%": 
+                const num1 = parseFloat(secondNumber);
+                const num2 = parseFloat(firstNumber);
+                if (num2 !== 0) {
+                    clear();
+                    setResult(num1 % num2);
+                } else {
+                    clear();
+                    setResult(NaN);
+                }
+                break;
+
 
 
             // TO FIX!!!
-            case "%": 
-                clear()
-                setResult(parseFloat(secondNumber) % parseFloat(firstNumber)) 
+            // case "pi": 
+            //     clear()
+            //     setResult(Math.PI)
+            //     break;
+
+            // case "pi":
+            //     const piOperations = {
+            //         "+": parseFloat(secondNumber) + Math.PI,
+            //         "-": parseFloat(secondNumber) - Math.PI,
+            //         "*": parseFloat(secondNumber) * Math.PI,
+            //         "/": parseFloat(secondNumber) / Math.PI,
+            //         // Add more operations as needed
+            //     };
+            //     clear();
+            //     if (piOperations[firstNumber]) {
+            //         setResult(piOperations[firstNumber]);
+            //     } else {
+            //         setResult(Math.PI);
+            //     }
+            //     break;
+
+            // case "pi":
+            //     const piOperations = {
+            //         "+": parseFloat(secondNumber) + Math.PI,
+            //         "-": parseFloat(secondNumber) - Math.PI,
+            //         "*": parseFloat(secondNumber) * Math.PI,
+            //         "/": parseFloat(secondNumber) / Math.PI,
+            //     };
+            //     clear();
+            //     setResult(piOperations[firstNumber] || Math.PI);
+            //     break;
+
+            case "pi":
+                if (firstNumber === "") {
+                    setResult(Math.PI);
+                } else {
+                    setResult(parseFloat(firstNumber) * Math.PI);
+                }
                 break;
 
-            case "pi": 
-                clear()
-                setResult(Math.PI)
-                break;
 
-            case "()": 
-                clear()
-                setResult(eval(firstNumber))              
-                break;
+            // case "()": 
+            //     clear()
+            //     setResult(eval(firstNumber))              
+            //     break;
 
 
 
@@ -93,6 +156,7 @@ export default function MyKeboard() {
                 break;
         };
     };
+
 
 
 
@@ -129,31 +193,146 @@ export default function MyKeboard() {
     // };
 
      // Updated display function to show both numbers on the same line
-     const displayNumbers = () => {
+    //  const displayNumbers = () => {
+    //     const combinedNumbers = `${secondNumber} ${operation} ${firstNumber}`;
+    //     const maxLength = 12; // Adjust this value based on the space available
+
+    //     if (result !== null) {
+    //     return (
+    //         <Text style={+result < 99999 ? [Styles.screenFirstNumber, {color: myColors.result, fontSize: 40}] : [Styles.screenFirstNumber, {fontSize: 50, color: myColors.result}]}>
+    //         {result?.toString()}
+    //         </Text>
+    //     );
+    //     } else if (combinedNumbers.length > maxLength) {
+    //     return (
+    //         <Text style={[Styles.screenFirstNumber, { fontSize: 50 }]}>
+    //         {combinedNumbers.slice(-maxLength)}
+    //         </Text>
+    //     );
+    //     } else {
+    //     return (
+    //         <Text style={[Styles.screenFirstNumber, { fontSize: 48 }]}>
+    //         {combinedNumbers}
+    //         </Text>
+    //     );
+    //     }
+    // };
+
+    // const displayNumbers = () => {
+    //     const combinedNumbers = `${secondNumber} ${operation} ${firstNumber}`;
+    //     const maxLength = 12; // Adjust this value based on the space available
+
+    //     if (result !== null) {
+    //         return (
+    //             <Text style={+result < 99999 ? [Styles.screenFirstNumber, {color: myColors.result, fontSize: 40}] : [Styles.screenFirstNumber, {fontSize: 50, color: myColors.result}]}>
+    //                 {result?.toString()}
+    //             </Text>
+    //         );
+    //     } else if (combinedNumbers.length > maxLength) {
+    //         return (
+    //             <Text style={[Styles.screenFirstNumber, { fontSize: 50 }]}>
+    //                 {combinedNumbers.slice(-maxLength)}
+    //             </Text>
+    //         );
+    //     } else {
+    //         let fontSize = 48; // Default font size
+    //         if (firstNumber === Math.PI.toString()) {
+    //             fontSize = 20; // Font size for pi
+    //         }
+    //         return (
+    //             <Text style={[Styles.screenFirstNumber, { fontSize: fontSize }]}>
+    //                 {combinedNumbers}
+    //             </Text>
+    //         );
+    //     }
+    // };
+
+    // const displayNumbers = () => {
+    //     const combinedNumbers = `${secondNumber} ${operation} ${firstNumber}`;
+    //     const maxLength = 12; // Adjust this value based on the space available
+
+    //     if (result !== null) {
+    //         return (
+    //             <Text style={+result < 99999 ? [Styles.screenFirstNumber, {color: myColors.result, fontSize: 40}] : [Styles.screenFirstNumber, {fontSize: 50, color: myColors.result}]}>
+    //                 {result?.toString()}
+    //             </Text>
+    //         );
+    //     } else if (combinedNumbers.length > maxLength) {
+    //         return (
+    //             <Text style={[Styles.screenFirstNumber, { fontSize: 50 }]}>
+    //                 {combinedNumbers.slice(-maxLength)}
+    //             </Text>
+    //         );
+    //     } else {
+    //         let fontSize = 48; // Default font size
+    //         if (isPiPressed) {
+    //             fontSize = 40; // Font size for pi
+    //         }
+    //         return (
+    //             <Text style={[Styles.screenFirstNumber, { fontSize: fontSize }]}>
+    //                 {combinedNumbers}
+    //             </Text>
+    //         );
+    //     }
+    // };
+
+    const displayNumbers = () => {
         const combinedNumbers = `${secondNumber} ${operation} ${firstNumber}`;
         const maxLength = 12; // Adjust this value based on the space available
 
         if (result !== null) {
-        return (
-            <Text style={+result < 99999 ? [Styles.screenFirstNumber, {color: myColors.result}] : [Styles.screenFirstNumber, {fontSize: 50, color: myColors.result}]}>
-            {result?.toString()}
-            </Text>
-        );
+            return (
+                <Text style={+result < 99999 ? [Styles.screenFirstNumber, {color: myColors.result, fontSize: 40}] : [Styles.screenFirstNumber, {fontSize: 50, color: myColors.result}]}>
+                    {result?.toString()}
+                </Text>
+            );
         } else if (combinedNumbers.length > maxLength) {
-        return (
-            <Text style={[Styles.screenFirstNumber, { fontSize: 30 }]}>
-            {combinedNumbers.slice(-maxLength)}
-            </Text>
-        );
+            return (
+                <Text style={[Styles.screenFirstNumber, { fontSize: 50 }]}>
+                    {combinedNumbers.slice(-maxLength)}
+                </Text>
+            );
         } else {
-        return (
-            <Text style={Styles.screenFirstNumber}>
-            {combinedNumbers}
-            </Text>
-        );
+            let fontSize = 48; // Default font size
+            if (firstNumber === Math.PI.toString()) {
+                fontSize = 40; // Font size for pi
+            }
+            return (
+                <Text style={[Styles.screenFirstNumber, { fontSize: fontSize }]}>
+                    {combinedNumbers}
+                </Text>
+            );
         }
-  };
+    };
 
+    // const displayNumbers = () => {
+    //     const combinedNumbers = `${secondNumber} ${operation} ${firstNumber}`;
+    //     const maxLength = 12; // Adjust this value based on the space available
+
+    //     if (result !== null) {
+    //         return (
+    //             <Text style={+result < 99999 ? [Styles.screenFirstNumber, {color: myColors.result, fontSize: 40}] : [Styles.screenFirstNumber, {fontSize: 50, color: myColors.result}]}>
+    //                 {result?.toString()}
+    //             </Text>
+    //         );
+    //     } else if (combinedNumbers.length > maxLength) {
+    //         return (
+    //             <Text style={[Styles.screenFirstNumber, { fontSize: 50 }]}>
+    //                 {combinedNumbers.slice(-maxLength)}
+    //             </Text>
+    //         );
+    //     } else {
+    //         let displayValue = firstNumber;
+    //         if (firstNumber === Math.PI.toFixed(15)) {
+    //             displayValue = Math.PI.toFixed(15); // Display pi as 3.14159...
+    //         }
+    //         return (
+    //             <Text style={[Styles.screenFirstNumber, { fontSize: 48 }]}>
+    //                 {displayValue}
+    //             </Text>
+    //         );
+    //     }
+    // };
 
 
 
@@ -187,7 +366,7 @@ export default function MyKeboard() {
         {/* first row */}
         <Button title="AC" isGray onPress={clear} />
         <Button title="+/-" isGray onPress={() => handleOperationPress("+/-")} />
-        <Button title="％" isGray onPress={() => handleOperationPress("％")} />
+        <Button title="%" isGray onPress={() => handleOperationPress("%")} />
         <Button title="÷" isBlue onPress={() => handleOperationPress("/")} />
       </View>
 
@@ -199,14 +378,14 @@ export default function MyKeboard() {
         <Button title="log" isGray onPress={() => handleOperationPress("log")} />
         <Button title="ln" isGray onPress={() => handleOperationPress("ln")} />
         <Button title="tan" isGray onPress={() => handleOperationPress("tan")} />
-        <Button title="π" isBlue onPress={() => handleOperationPress("pi")} />
+        <Button title="π" isBlue onPress={() => handleNumberPress(Math.PI.toFixed(5))} />
       </View>
 
       <View style={Styles.row}>
         <Button title="7" onPress={() => handleNumberPress("7")} />
         <Button title="8" onPress={() => handleNumberPress("8")} />
         <Button title="9" onPress={() => handleNumberPress("9")} />
-        <Button title="×" isBlue onPress={() => handleOperationPress("*")} />
+        <Button title="x" isBlue onPress={() => handleOperationPress("*")} />
       </View>
       <View style={Styles.row}>
         <Button title="4" onPress={() => handleNumberPress("4")} />
