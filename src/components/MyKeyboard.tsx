@@ -5,43 +5,68 @@ import { Styles } from "../styles/GlobalStyles";
 import { myColors } from "../styles/Colors";
 
 
+
+
+
 export default function MyKeboard() {
 
     const [firstNumber, setFirstNumber] = React.useState("")
     const [secondNumber, setSecondNumber] = React.useState("")
     const [operation, setOperation] = React.useState("")
     const [result, setResult] = React.useState<Number | null>(null)
-    // const [isPiPressed, setIsPiPressed] = React.useState(false); 
+
+
 
     const handleNumberPress = (buttonValue: string) => {
-        // if (firstNumber.length < 10) {
-        //     setFirstNumber(firstNumber + buttonValue)
-        // }
-
         if (buttonValue === "π") {
-            setFirstNumber(Math.PI.toFixed(5));
+            setFirstNumber(Math.PI.toFixed(5)); // Display 3.14 for pi
+        } else if (buttonValue === "sin") {
+            setOperation("sin");
+            setFirstNumber("");
+        } else if (buttonValue === "cos") {
+            setOperation("cos");
+            setFirstNumber("");
         } else if (firstNumber.length < 10) {
             setFirstNumber(firstNumber + buttonValue);
         }
     };
 
-
-
     // const handleNumberPress = (buttonValue: string) => {
     //     if (buttonValue === "π") {
-    //         setIsPiPressed(true); // Set flag for π button press
-    //         setFirstNumber(Math.PI.toString());
+    //       setFirstNumber(Math.PI.toFixed(5));
+    //     } else if (buttonValue === "sin") {
+    //       setOperation("sin");
+    //       setFirstNumber("");
+    //     } else if (buttonValue === "cos") {
+    //       setOperation("cos");
+    //       setFirstNumber("");
+    //     } else if (buttonValue === "(" || buttonValue === ")") {
+    //       setFirstNumber((prevNumber) => prevNumber + buttonValue);
     //     } else if (firstNumber.length < 10) {
-    //         setIsPiPressed(false); // Reset flag for other numbers
-    //         setFirstNumber(firstNumber + buttonValue);
+    //       setFirstNumber((prevNumber) => prevNumber + buttonValue);
     //     }
-    // };
+    //   };
+
+
+
+
+
 
     const handleOperationPress = (buttonValue: string) => {
         setOperation(buttonValue)
         setSecondNumber(firstNumber)
-        setFirstNumber("")
+        setFirstNumber("") 
+        
+        if (buttonValue === "x^2") {
+          clear();
+          setResult(parseFloat(firstNumber) ** 2);
+        }
+        if (buttonValue === "x^3") {
+            clear()
+            setResult(parseFloat(firstNumber) ** 3);
+        }
     };
+
 
     const clear = () => {
         setFirstNumber("")
@@ -50,8 +75,14 @@ export default function MyKeboard() {
         setResult(null)
     };
 
+
+
+
+
+
     // Logic & mathematical operations 
     const getResult = () => {
+
         switch (operation) {
             case "+":
                 clear()
@@ -86,6 +117,24 @@ export default function MyKeboard() {
                 clear()
                 setResult(Math.tan(parseFloat(firstNumber)))
                 break;
+            case "sin":
+                if (!isNaN(parseFloat(firstNumber))) {
+                    setResult(Math.sin(parseFloat(firstNumber)))
+                } else {
+                    setResult(NaN)
+                }
+                break;
+            
+
+            case "cos":
+                if (!isNaN(parseFloat(firstNumber))) {
+                    setResult(Math.cos(parseFloat(firstNumber)))
+                } else {
+                    setResult(NaN)
+                }
+                break;
+        
+
             case "%": 
                 const num1 = parseFloat(secondNumber);
                 const num2 = parseFloat(firstNumber);
@@ -97,42 +146,6 @@ export default function MyKeboard() {
                     setResult(NaN);
                 }
                 break;
-
-
-
-            // TO FIX!!!
-            // case "pi": 
-            //     clear()
-            //     setResult(Math.PI)
-            //     break;
-
-            // case "pi":
-            //     const piOperations = {
-            //         "+": parseFloat(secondNumber) + Math.PI,
-            //         "-": parseFloat(secondNumber) - Math.PI,
-            //         "*": parseFloat(secondNumber) * Math.PI,
-            //         "/": parseFloat(secondNumber) / Math.PI,
-            //         // Add more operations as needed
-            //     };
-            //     clear();
-            //     if (piOperations[firstNumber]) {
-            //         setResult(piOperations[firstNumber]);
-            //     } else {
-            //         setResult(Math.PI);
-            //     }
-            //     break;
-
-            // case "pi":
-            //     const piOperations = {
-            //         "+": parseFloat(secondNumber) + Math.PI,
-            //         "-": parseFloat(secondNumber) - Math.PI,
-            //         "*": parseFloat(secondNumber) * Math.PI,
-            //         "/": parseFloat(secondNumber) / Math.PI,
-            //     };
-            //     clear();
-            //     setResult(piOperations[firstNumber] || Math.PI);
-            //     break;
-
             case "pi":
                 if (firstNumber === "") {
                     setResult(Math.PI);
@@ -142,10 +155,18 @@ export default function MyKeboard() {
                 break;
 
 
-            // case "()": 
-            //     clear()
-            //     setResult(eval(firstNumber))              
-            //     break;
+
+
+                // FIX THE BLOODY () OPERATION!!!
+                // case "(": // Handling opening parenthesis
+                //     setFirstNumber((prevNumber) => prevNumber + "(");
+                //     break;
+
+                // case ")": // Handling closing parenthesis
+                //     setFirstNumber((prevNumber) => prevNumber + ")");
+                //     break;
+
+
 
 
 
@@ -163,119 +184,7 @@ export default function MyKeboard() {
 
 
 
-
-
     // Display numbers types 
-    // const firstNumberDisplay = () => {
-    //     if (result !== null) {
-    //         return <Text style={+result < 99999 ? [Styles.screenFirstNumber, {color: myColors.result}] : [Styles.screenFirstNumber, {fontSize: 50, color: myColors.result}]}>{result?.toString()}</Text>
-    //     }
-    //     if (firstNumber && firstNumber.length < 6) {
-    //         return <Text style={Styles.screenFirstNumber}>{firstNumber}</Text>
-    //     }
-    //     if (firstNumber === "") {
-    //         return <Text style={Styles.screenFirstNumber}>{"0"}</Text>
-    //     }
-    //     if (firstNumber.length > 5 && firstNumber.length < 8) {
-    //         return (
-    //             <Text style={[Styles.screenFirstNumber, { fontSize: 70 }]}>
-    //                 {firstNumber}
-    //             </Text>
-    //         );
-    //     }
-    //     if (firstNumber.length > 7) {
-    //         return (
-    //             <Text style={[Styles.screenFirstNumber, { fontSize: 70 }]}>
-    //                 {firstNumber}
-    //             </Text>
-    //         );
-    //     }
-    // };
-
-     // Updated display function to show both numbers on the same line
-    //  const displayNumbers = () => {
-    //     const combinedNumbers = `${secondNumber} ${operation} ${firstNumber}`;
-    //     const maxLength = 12; // Adjust this value based on the space available
-
-    //     if (result !== null) {
-    //     return (
-    //         <Text style={+result < 99999 ? [Styles.screenFirstNumber, {color: myColors.result, fontSize: 40}] : [Styles.screenFirstNumber, {fontSize: 50, color: myColors.result}]}>
-    //         {result?.toString()}
-    //         </Text>
-    //     );
-    //     } else if (combinedNumbers.length > maxLength) {
-    //     return (
-    //         <Text style={[Styles.screenFirstNumber, { fontSize: 50 }]}>
-    //         {combinedNumbers.slice(-maxLength)}
-    //         </Text>
-    //     );
-    //     } else {
-    //     return (
-    //         <Text style={[Styles.screenFirstNumber, { fontSize: 48 }]}>
-    //         {combinedNumbers}
-    //         </Text>
-    //     );
-    //     }
-    // };
-
-    // const displayNumbers = () => {
-    //     const combinedNumbers = `${secondNumber} ${operation} ${firstNumber}`;
-    //     const maxLength = 12; // Adjust this value based on the space available
-
-    //     if (result !== null) {
-    //         return (
-    //             <Text style={+result < 99999 ? [Styles.screenFirstNumber, {color: myColors.result, fontSize: 40}] : [Styles.screenFirstNumber, {fontSize: 50, color: myColors.result}]}>
-    //                 {result?.toString()}
-    //             </Text>
-    //         );
-    //     } else if (combinedNumbers.length > maxLength) {
-    //         return (
-    //             <Text style={[Styles.screenFirstNumber, { fontSize: 50 }]}>
-    //                 {combinedNumbers.slice(-maxLength)}
-    //             </Text>
-    //         );
-    //     } else {
-    //         let fontSize = 48; // Default font size
-    //         if (firstNumber === Math.PI.toString()) {
-    //             fontSize = 20; // Font size for pi
-    //         }
-    //         return (
-    //             <Text style={[Styles.screenFirstNumber, { fontSize: fontSize }]}>
-    //                 {combinedNumbers}
-    //             </Text>
-    //         );
-    //     }
-    // };
-
-    // const displayNumbers = () => {
-    //     const combinedNumbers = `${secondNumber} ${operation} ${firstNumber}`;
-    //     const maxLength = 12; // Adjust this value based on the space available
-
-    //     if (result !== null) {
-    //         return (
-    //             <Text style={+result < 99999 ? [Styles.screenFirstNumber, {color: myColors.result, fontSize: 40}] : [Styles.screenFirstNumber, {fontSize: 50, color: myColors.result}]}>
-    //                 {result?.toString()}
-    //             </Text>
-    //         );
-    //     } else if (combinedNumbers.length > maxLength) {
-    //         return (
-    //             <Text style={[Styles.screenFirstNumber, { fontSize: 50 }]}>
-    //                 {combinedNumbers.slice(-maxLength)}
-    //             </Text>
-    //         );
-    //     } else {
-    //         let fontSize = 48; // Default font size
-    //         if (isPiPressed) {
-    //             fontSize = 40; // Font size for pi
-    //         }
-    //         return (
-    //             <Text style={[Styles.screenFirstNumber, { fontSize: fontSize }]}>
-    //                 {combinedNumbers}
-    //             </Text>
-    //         );
-    //     }
-    // };
-
     const displayNumbers = () => {
         const combinedNumbers = `${secondNumber} ${operation} ${firstNumber}`;
         const maxLength = 12; // Adjust this value based on the space available
@@ -293,10 +202,7 @@ export default function MyKeboard() {
                 </Text>
             );
         } else {
-            let fontSize = 48; // Default font size
-            if (firstNumber === Math.PI.toString()) {
-                fontSize = 40; // Font size for pi
-            }
+            const fontSize = firstNumber === Math.PI.toString() ? 40 : 48; // Default font size
             return (
                 <Text style={[Styles.screenFirstNumber, { fontSize: fontSize }]}>
                     {combinedNumbers}
@@ -305,63 +211,16 @@ export default function MyKeboard() {
         }
     };
 
-    // const displayNumbers = () => {
-    //     const combinedNumbers = `${secondNumber} ${operation} ${firstNumber}`;
-    //     const maxLength = 12; // Adjust this value based on the space available
-
-    //     if (result !== null) {
-    //         return (
-    //             <Text style={+result < 99999 ? [Styles.screenFirstNumber, {color: myColors.result, fontSize: 40}] : [Styles.screenFirstNumber, {fontSize: 50, color: myColors.result}]}>
-    //                 {result?.toString()}
-    //             </Text>
-    //         );
-    //     } else if (combinedNumbers.length > maxLength) {
-    //         return (
-    //             <Text style={[Styles.screenFirstNumber, { fontSize: 50 }]}>
-    //                 {combinedNumbers.slice(-maxLength)}
-    //             </Text>
-    //         );
-    //     } else {
-    //         let displayValue = firstNumber;
-    //         if (firstNumber === Math.PI.toFixed(15)) {
-    //             displayValue = Math.PI.toFixed(15); // Display pi as 3.14159...
-    //         }
-    //         return (
-    //             <Text style={[Styles.screenFirstNumber, { fontSize: 48 }]}>
-    //                 {displayValue}
-    //             </Text>
-    //         );
-    //     }
-    // };
-
 
 
     
     return (
         <View style={Styles.viewBottom}>
-
-            <View
-                style={{
-                    height: 120,
-                    width: "90%",
-                    justifyContent: "flex-end",
-                    alignSelf: "center"
-                }} 
-            >
+            <View style={{ height: 120, width: "90%", justifyContent: "flex-end", alignSelf: "center" }}>
                 <Text style={Styles.screenSecondNumber}>
                     {displayNumbers()}
                 </Text>
-                </View>
-
-
-                {/* <Text style={Styles.screenSecondNumber}>
-                    {secondNumber}
-                    {displayNumbers()}
-                <Text style={{ color: "purple", fontSize: 50, fontWeight: "500" }}>{operation}</Text>
-                </Text>
-                {firstNumberDisplay()}
-            </View> */}
-
+            </View>
     <View style={Styles.row}>
         {/* first row */}
         <Button title="AC" isGray onPress={clear} />
@@ -370,15 +229,20 @@ export default function MyKeboard() {
         <Button title="÷" isBlue onPress={() => handleOperationPress("/")} />
       </View>
 
-      {/* <View style={Styles.row}>
-        <Button title="()" isGray onPress={() => handleOperationPress("()")} />
-      </View> */}
+      <View style={Styles.row}>
+        <Button title="sin" isGray onPress={() => handleNumberPress("sin")} />
+        <Button title="cos" isGray onPress={() => handleNumberPress("cos")} />
+        {/* <Button title="(" onPress={() => setFirstNumber((prevNumber) => `${prevNumber}(`)} />
+        <Button title=")" onPress={() => setFirstNumber((prevNumber) => `${prevNumber})`)} /> */}
+        <Button title="x²" isGray onPress={() => handleOperationPress("x^2")} />
+        <Button title="x³" isGray onPress={() => handleOperationPress("x^3")} />
+      </View>
 
       <View style={Styles.row}>
         <Button title="log" isGray onPress={() => handleOperationPress("log")} />
         <Button title="ln" isGray onPress={() => handleOperationPress("ln")} />
         <Button title="tan" isGray onPress={() => handleOperationPress("tan")} />
-        <Button title="π" isBlue onPress={() => handleNumberPress(Math.PI.toFixed(5))} />
+        <Button title="π" isBlue onPress={() => handleNumberPress("π")} />
       </View>
 
       <View style={Styles.row}>
@@ -387,24 +251,28 @@ export default function MyKeboard() {
         <Button title="9" onPress={() => handleNumberPress("9")} />
         <Button title="x" isBlue onPress={() => handleOperationPress("*")} />
       </View>
+
       <View style={Styles.row}>
         <Button title="4" onPress={() => handleNumberPress("4")} />
         <Button title="5" onPress={() => handleNumberPress("5")} />
         <Button title="6" onPress={() => handleNumberPress("6")} />
         <Button title="-" isBlue onPress={() => handleOperationPress("-")} />
       </View>
+
       <View style={Styles.row}>
         <Button title="1" onPress={() => handleNumberPress("1")} />
         <Button title="2" onPress={() => handleNumberPress("2")} />
         <Button title="3" onPress={() => handleNumberPress("3")} />
         <Button title="+" isBlue onPress={() => handleOperationPress("+")} />
       </View>
+
       <View style={Styles.row}>
         <Button title="." onPress={() => handleNumberPress(".")} />
         <Button title="0" onPress={() => handleNumberPress("0")} />
         <Button title="⌫" onPress={() => setFirstNumber(firstNumber.slice(0, -1))} />
         <Button title="=" isBlue onPress={() => getResult()} />
       </View>
+      
     </View>
     );
 };
